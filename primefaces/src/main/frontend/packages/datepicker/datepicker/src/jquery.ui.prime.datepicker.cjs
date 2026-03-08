@@ -540,13 +540,18 @@ $.widget("prime.datePicker", {
 
     isSelected: function(dateMeta) {
         if (this.value) {
-            if (this.options.view === 'week') {
-                var currentDate = this.value[0];
-                var currentDateMeta = { day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear() };
-                var w1 = this.options.weekCalculator(currentDateMeta);
-                var w2 = this.options.weekCalculator(dateMeta);
-                return w1 == w2;
-            }
+//             if (this.options.view === 'week') {
+//                 var currentDate = this.value[0];
+//                 var currentDateMeta = { day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear() };
+//                 var endDateYear;
+//                 if (this.value[1]) {
+//                     endDateYear = this.value[1].getFullYear();
+//                 }
+//
+//                 var w1 = this.options.weekCalculator(currentDateMeta);
+//                 var w2 = this.options.weekCalculator(dateMeta);
+//                 return w1 == w2 && (currentDateMeta.year === dateMeta.year || endDateYear === dateMeta.year);
+//             }
 
             if (this.isSingleSelection()) {
                 return this.isDateEquals(this.value, dateMeta);
@@ -1612,7 +1617,7 @@ $.widget("prime.datePicker", {
             week = Math.floor((this.dayOfYear(d) - weekOffset - 1) / 7) + 1;
 
         if (week < 1) {
-            return week + this.weeksInYear(resYear, firstDayOfWeek, doy);
+            return week + this.weeksInYear(d.year - 1, firstDayOfWeek, doy);
         }
         else if (week > this.weeksInYear(d.year, firstDayOfWeek, doy)) {
             return week - this.weeksInYear(d.year, firstDayOfWeek, doy);
@@ -3025,7 +3030,7 @@ $.widget("prime.datePicker", {
             if (month.month === dateMeta.month && month.year === dateMeta.year) {
                 for (let week of month.dates) {
                     for (let day of week) {
-                        if (day.day === dateMeta.day) {
+                        if (day.day === dateMeta.day && day.month === dateMeta.month && day.year === dateMeta.year) {
                             return week;
                         }
                     }
